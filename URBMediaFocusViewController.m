@@ -83,6 +83,7 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 		self.shouldBlurBackground = YES;
 		self.parallaxEnabled = YES;
 		self.shouldDismissOnTap = NO;
+        self.motionEffectEnabled = YES;
 	}
 	return self;
 }
@@ -190,6 +191,27 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 		_unhideStatusBarOnDismiss = ![UIApplication sharedApplication].statusBarHidden;
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 	}
+    
+    // add UIMotionEffect if enabled
+    if (self.motionEffectEnabled) {
+        
+        UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+        
+        verticalMotionEffect.minimumRelativeValue = @(-20);
+        verticalMotionEffect.maximumRelativeValue = @(20);
+        
+        UIInterpolatingMotionEffect *horizontalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+        
+        horizontalMotionEffect.minimumRelativeValue = @(-20);
+        horizontalMotionEffect.maximumRelativeValue = @(20);
+        
+        UIMotionEffectGroup *motionEffectGroup = [UIMotionEffectGroup new];
+        motionEffectGroup.motionEffects = @[verticalMotionEffect, horizontalMotionEffect];
+        
+        [UIView animateWithDuration:0.2f animations:^{
+            [self.blurredSnapshotView addMotionEffect:motionEffectGroup];
+        }];
+    }
 	
 	// update scrollView.contentSize to the size of the image
 	self.scrollView.contentSize = image.size;

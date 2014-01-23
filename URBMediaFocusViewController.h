@@ -50,6 +50,7 @@
 @property (nonatomic, assign) BOOL shouldBlurBackground;
 @property (nonatomic, assign) BOOL parallaxEnabled;
 @property (nonatomic, assign) BOOL shouldDismissOnTap;
+@property (nonatomic, assign) BOOL motionEffectEnabled;
 @property (nonatomic, weak) id<URBMediaFocusViewControllerDelegate> delegate;
 
 /**
